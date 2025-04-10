@@ -73,6 +73,37 @@ export default function AdminProjects() {
     }
   };
 
+  const handleDelete = async () => {
+    if (!currentProject || !currentProject.id) return;
+
+    try {
+      const response = await fetch(`https://7b46c7ce9215a6d8.mokky.dev/project/${currentProject.id}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete project");
+      }
+
+      toast({
+        title: "Success",
+        description: "Project deleted successfully",
+        variant: "default",
+      });
+
+      // Loyihalar ro'yxatini yangilash
+      fetchProjects();
+      setCurrentProject(null); // Tanlangan loyihani tozalash
+    } catch (error) {
+      console.error("Error deleting project:", error);
+      toast({
+        title: "Error",
+        description: "Failed to delete project",
+        variant: "destructive",
+      });
+    }
+  };
+
   useEffect(() => {
     fetchProjects();
   }, []);
@@ -267,11 +298,7 @@ export default function AdminProjects() {
               <div className="flex justify-between mt-8">
                 <Button
                   variant="destructive"
-                  onClick={() => {
-                    const updatedProjects = projects.filter((p) => p.id !== currentProject.id);
-                    setProjects(updatedProjects);
-                    setCurrentProject(null);
-                  }}
+                  onClick={handleDelete}
                   className="flex items-center gap-2"
                   disabled={!currentProject.id}
                 >

@@ -1,15 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useLanguage } from "@/components/language-provider";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Heart, MessageCircle, Eye } from "lucide-react";
+import { useLanguage } from "@/components/language-provider";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { useToast } from "@/components/ui/use-toast";
 
 interface BlogPost {
   id: number;
@@ -23,18 +19,15 @@ interface BlogPost {
     ru: string;
     uz: string;
   };
+  image: string;
   date: string;
-  likes: number;
-  comments: number;
-  views: number;
   author: string;
   authorImage: string;
-  image: string; // Blog uchun rasm
+  views: number; // Ko'rishlar soni
 }
 
-export default function Blog() {
+export default function BlogPage() {
   const { language } = useLanguage();
-  const { toast } = useToast();
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -49,18 +42,13 @@ export default function Blog() {
         setPosts(data);
       } catch (error) {
         console.error("Error fetching blog posts:", error);
-        toast({
-          title: "Error",
-          description: "Failed to load blog posts",
-          variant: "destructive",
-        });
       } finally {
         setLoading(false);
       }
     };
 
     fetchPosts();
-  }, [toast]);
+  }, []);
 
   if (loading) {
     return (
@@ -95,41 +83,34 @@ export default function Blog() {
         >
           {posts.map((post) => (
             <motion.div key={post.id}>
-              <Card className="overflow-hidden">
-                {/* Blog uchun rasm */}
-                <div className="aspect-video bg-muted overflow-hidden">
-                  <img
-                    src={post.image || "/placeholder.svg"}
-                    alt={post.title[language]}
-                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
-                  />
-                </div>
-                <CardHeader>
-                  <CardTitle>{post.title[language]}</CardTitle>
-                  <CardDescription>{post.description[language]}</CardDescription>
-                </CardHeader>
-                <CardContent>
+              <div className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
+                <img
+                  src={post.image}
+                  alt={post.title[language]}
+                  className="w-full h-48 object-cover"
+                />
+                <div className="p-4">
+                  <h2 className="text-xl font-bold mb-2">
+                    <Link href={`/blog/${post.id}`} className="hover:underline">
+                      {post.title[language]}
+                    </Link>
+                  </h2>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    {post.description[language]}
+                  </p>
                   <div className="flex items-center gap-4">
-                    <Button variant="outline" className="flex items-center gap-2">
-                      <Heart className="h-4 w-4" />
-                      {post.likes} Likes
-                    </Button>
-                    <Button variant="outline" className="flex items-center gap-2">
-                      <MessageCircle className="h-4 w-4" />
-                      {post.comments} Comments
-                    </Button>
-                    <div className="flex items-center gap-2 text-muted-foreground">
-                      <Eye className="h-4 w-4" />
-                      {post.views} Views
+                    <img
+                      src={post.authorImage}
+                      alt={post.author}
+                      className="w-10 h-10 rounded-full object-cover"
+                    />
+                    <div>
+                      <p className="text-sm font-bold">{post.author}</p>
+                      <p className="text-sm text-muted-foreground">Views: {post.views}</p>
                     </div>
                   </div>
-                </CardContent>
-                <CardFooter>
-                  <Link href={`/blog/${post.id}`} className="text-primary hover:underline">
-                    Read More
-                  </Link>
-                </CardFooter>
-              </Card>
+                </div>
+              </div>
             </motion.div>
           ))}
         </motion.div>

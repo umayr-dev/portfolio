@@ -151,6 +151,37 @@ export default function AdminBlog() {
     setValidationErrors([]);
   };
 
+  const handleDelete = async () => {
+    if (!currentPost) return;
+
+    try {
+      const response = await fetch(`https://7b46c7ce9215a6d8.mokky.dev/blog/${currentPost.id}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete blog post");
+      }
+
+      toast({
+        title: "Success",
+        description: "Blog post deleted successfully",
+        variant: "default",
+      });
+
+      // Bloglar ro'yxatini yangilash
+      fetchPosts();
+      setCurrentPost(null); // Tanlangan postni tozalash
+    } catch (error) {
+      console.error("Error deleting blog post:", error);
+      toast({
+        title: "Error",
+        description: "Failed to delete blog post",
+        variant: "destructive",
+      });
+    }
+  };
+
   const validateForm = (): boolean => {
     if (!currentPost) return false;
 
@@ -332,6 +363,17 @@ export default function AdminBlog() {
               <Button onClick={handleSave} className="mt-4">
                 Save Changes
               </Button>
+
+              {currentPost && (
+                <Button
+                  onClick={handleDelete}
+                  variant="destructive"
+                  className="mt-4 flex items-center gap-2"
+                >
+                  <Trash className="h-4 w-4" />
+                  Delete Post
+                </Button>
+              )}
             </>
           ) : (
             <div className="text-center py-12">Select a post to edit or add a new one</div>

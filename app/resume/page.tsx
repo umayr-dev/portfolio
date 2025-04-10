@@ -97,9 +97,6 @@ export default function Resume() {
       "HTML5",
       "CSS3",
       "Tailwind CSS",
-      "Node.js",
-      "Express",
-      "MongoDB",
       "Git",
       "Figma",
       "Responsive Design",
@@ -113,9 +110,9 @@ export default function Resume() {
           uz: "Ingliz tili",
         },
         level: {
-          en: "Fluent",
-          ru: "Свободно",
-          uz: "Erkin",
+          en: "B1",
+          ru: "B1",
+          uz: "B1",
         },
       },
       {
@@ -125,9 +122,9 @@ export default function Resume() {
           uz: "Rus tili",
         },
         level: {
-          en: "Native",
+          en: "A2",
           ru: "Родной",
-          uz: "Ona tili",
+          uz: "A2",
         },
       },
       {
@@ -151,7 +148,7 @@ export default function Resume() {
           uz: "Frontend ishlab chiqarish sertifikati",
         },
         issuer: "Tech Academy",
-        year: "2020",
+        year: "2022",
       },
     ],
   }

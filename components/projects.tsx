@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useLanguage } from "@/components/language-provider";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -40,37 +40,37 @@ export default function Projects() {
     },
   };
 
-  // API orqali loyihalarni olish
-  useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        const response = await fetch("https://7b46c7ce9215a6d8.mokky.dev/project");
-        if (!response.ok) {
-          throw new Error("Failed to fetch projects");
-        }
-        const data = await response.json();
-        setProjects(data);
-      } catch (error) {
-        console.error("Error fetching projects:", error);
-        toast({
-          title: "Error",
-          description: "Failed to load projects",
-          variant: "destructive",
-        });
-      } finally {
-        setLoading(false);
+  const fetchProjects = useCallback(async () => {
+    try {
+      setLoading(true);
+      const response = await fetch("https://7b46c7ce9215a6d8.mokky.dev/project"); // O‘z API‘ingizni qo‘ying
+      if (!response.ok) {
+        throw new Error("Failed to fetch projects");
       }
-    };
+      const data = await response.json();
+      setProjects(data);
+    } catch (error) {
+      console.error("Error fetching projects:", error);
+      toast({
+        title: "Error",
+        description: "Failed to load projects",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
+  useEffect(() => {
     fetchProjects();
-  }, []); // `toast` dependency arraydan olib tashlandi
+  }, [fetchProjects]);
 
   const saveProject = async (project) => {
     try {
       const method = project.id ? "PUT" : "POST";
       const url = project.id
         ? `https://7b46c7ce9215a6d8.mokky.dev/project/${project.id}`
-        : "https://7b46c7ce9215a6d8.mokky.dev/project";
+        : "https://7b46c7ce9215a6d8.mokky.dev/project"; // O‘z API‘ingizni qo‘ying
 
       const response = await fetch(url, {
         method,
@@ -81,8 +81,6 @@ export default function Projects() {
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        console.error("API Error:", errorData);
         throw new Error("Failed to save project");
       }
 
@@ -92,7 +90,7 @@ export default function Projects() {
         variant: "default",
       });
 
-      fetchProjects(); // Loyihalar ro'yxatini yangilash
+      await fetchProjects(); // Loyihalar ro'yxatini yangilash
     } catch (error) {
       console.error("Error saving project:", error);
       toast({
@@ -118,7 +116,7 @@ export default function Projects() {
   return (
     <section id="projects" className="py-16 bg-muted/50">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12 scroll-animate fade-up">
+        <div className="text-center mb-12">
           <motion.h2
             className="text-3xl font-bold mb-4"
             initial={{ opacity: 0, y: -20 }}
@@ -137,12 +135,37 @@ export default function Projects() {
           </motion.p>
         </div>
 
-        <div ref={ref} className="grid grid-cols-1 md:grid-cols-2 gap-8 stagger-animate">
+        <div ref={ref} className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {projects.length > 0 ? (
             projects.map((project) => (
-              <div key={project.id} className="project-card h-full">
-                {/* Project card content */}
-              </div>
+              <Card key={project.id} className="project-card">
+                <CardHeader>
+                  <CardTitle>{project.title[language]}</CardTitle>
+                  <CardDescription>{project.description[language]}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {project.tags?.map((tag, index) => (
+                    <Badge key={index} className="mr-2">
+                      {tag}
+                    </Badge>
+                  ))}
+                </CardContent>
+                <CardFooter className="flex justify-between">
+                  <Link href={project.demoUrl} passHref>
+                    <Button variant="outline" className="flex items-center">
+                      {translations.viewProject[language]} <ArrowUpRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </Link>
+                  {project.codeUrl && (
+                    <Link href={project.codeUrl} passHref>
+                      <Button variant="outline" className="flex items-center">
+                        <Github className="mr-2 h-4 w-4" />
+                        {translations.viewCode[language]}
+                      </Button>
+                    </Link>
+                  )}
+                </CardFooter>
+              </Card>
             ))
           ) : (
             <p className="text-center text-muted-foreground">No projects available</p>
