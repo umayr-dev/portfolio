@@ -62,19 +62,19 @@ export default function Contact() {
       uz: "Aloqa ma'lumotlari",
     },
     address: {
-      en: "123 Main Street, City, Country",
-      ru: "123 Главная улица, Город, Страна",
-      uz: "123 Asosiy ko'cha, Shahar, Mamlakat",
+      en: "Urgench, Khorezm, Uzbekistan",
+      ru: "Urgench, Khorezm, Uzbekistan",
+      uz: "Urgench, Khorezm, Uzbekistan",
     },
     phone: {
-      en: "+1 234 567 890",
-      ru: "+1 234 567 890",
-      uz: "+1 234 567 890",
+      en: "+998 93 818 6066",
+      ru: "+998 93 818 6066",
+      uz: "+998 93 818 6066",
     },
     emailAddress: {
-      en: "contact@example.com",
-      ru: "contact@example.com",
-      uz: "contact@example.com",
+      en: "abuqodir0107@gmail.com",
+      ru: "abuqodir0107@gmail.com",
+      uz: "abuqodir0107@gmail.com",
     },
   }
 
@@ -177,7 +177,7 @@ export default function Contact() {
                 <motion.div variants={item} className="mt-8">
                   <div className="h-64 bg-muted rounded-lg overflow-hidden">
                     <iframe
-                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d387193.30596552044!2d-74.25986548248684!3d40.69714941932609!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2sca!4v1649087965760!5m2!1sen!2sca"
+                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d95544.97288171938!2d60.54067260633739!3d41.55235173764014!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x41dfc9284eafb523%3A0xffaf4382f65d7b61!2z0KPRgNCz0LXQvdGHLCDQpdC-0YDQtdC30LzRgdC60LDRjyDQvtCx0LvQsNGB0YLRjCwg0KPQt9Cx0LXQutC40YHRgtCw0L0!5e0!3m2!1sru!2s!4v1744282421210!5m2!1sru!2s"
                       width="100%"
                       height="100%"
                       style={{ border: 0 }}
