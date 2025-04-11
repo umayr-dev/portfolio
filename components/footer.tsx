@@ -3,7 +3,7 @@
 import { useLanguage } from "@/components/language-provider"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { Github, Linkedin, Twitter, Heart, Users } from "lucide-react"
+import { Github, Linkedin, Twitter, Heart, Users, Send, } from "lucide-react"
 import { useState, useEffect } from "react"
 
 export default function Footer() {
@@ -182,6 +182,16 @@ useEffect(() => {
               <Button variant="ghost" size="icon" asChild>
                 <Link href="https://twitter.com" target="_blank" rel="noopener noreferrer">
                   <Twitter className="h-5 w-5" />
+                </Link>
+              </Button>
+              <Button variant="ghost" size="icon" asChild>
+                <Link href="https://t.me/umayr-dev" target="_blank" rel="noopener noreferrer">
+                  <Users className="h-5 w-5" />
+                </Link>
+              </Button>
+              <Button variant="ghost" size="icon" asChild>
+                <Link href="https://t.me/ibn_ihsaan" target="_blank" rel="noopener noreferrer">
+                  <Send className="h-5 w-5" />
                 </Link>
               </Button>
             </div>
