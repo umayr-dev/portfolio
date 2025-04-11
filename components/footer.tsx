@@ -8,26 +8,39 @@ import { useState, useEffect } from "react"
 
 export default function Footer() {
   const { language } = useLanguage()
-  const [visitorCount, setVisitorCount] = useState(0)
+  const [visitorCount, setVisitorCount] = useState(0);
 
-  useEffect(() => {
-    // Get visitor count from localStorage
-    const storedCount = localStorage.getItem("totalVisitors")
-    if (storedCount) {
-      setVisitorCount(Number.parseInt(storedCount))
-    }
+useEffect(() => {
+  if (!sessionStorage.getItem("visited")) {
+    sessionStorage.setItem("visited", "true");
 
-    // Listen for visitor count updates
-    const handleVisitorCountUpdate = (event: CustomEvent) => {
-      setVisitorCount(event.detail)
-    }
+    const storedCount = localStorage.getItem("totalVisitors");
+    const newCount = storedCount ? Number.parseInt(storedCount) + 1 : 1;
+    localStorage.setItem("totalVisitors", newCount.toString());
+    setVisitorCount(newCount);
 
-    window.addEventListener("visitorCountUpdated", handleVisitorCountUpdate as EventListener)
+    // CustomEvent orqali yangilash
+    const event = new CustomEvent("visitorCountUpdated", { detail: newCount });
+    window.dispatchEvent(event);
+  } else {
+    // Faqat localStorage dan o‘qib olish
+    const storedCount = localStorage.getItem("totalVisitors");
+    setVisitorCount(storedCount ? Number.parseInt(storedCount) : 0);
+  }
+}, []);
 
-    return () => {
-      window.removeEventListener("visitorCountUpdated", handleVisitorCountUpdate as EventListener)
-    }
-  }, [])
+useEffect(() => {
+  // Listen for visitor count updates
+  const handleVisitorCountUpdate = (event: CustomEvent) => {
+    setVisitorCount(event.detail);
+  };
+
+  window.addEventListener("visitorCountUpdated", handleVisitorCountUpdate as EventListener);
+
+  return () => {
+    window.removeEventListener("visitorCountUpdated", handleVisitorCountUpdate as EventListener);
+  };
+}, []);
 
   const translations = {
     rights: {
