@@ -185,7 +185,7 @@ useEffect(() => {
                 </Link>
               </Button>
               <Button variant="ghost" size="icon" asChild>
-                <Link href="https://t.me/umayr-dev" target="_blank" rel="noopener noreferrer">
+                <Link href="https://t.me/umayr_dev" target="_blank" rel="noopener noreferrer">
                   <Users className="h-5 w-5" />
                 </Link>
               </Button>
