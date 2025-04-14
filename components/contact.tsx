@@ -76,6 +76,11 @@ export default function Contact() {
       ru: "abuqodir0107@gmail.com",
       uz: "abuqodir0107@gmail.com",
     },
+    telegram: {
+      en: "Telegram Username",
+      ru: "Имя пользователя Telegram",
+      uz: "Telegram foydalanuvchi nomi",
+    },
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -86,13 +91,13 @@ export default function Contact() {
       // Telegram botga xabar yuborish
       await sendMessage({
         name: (document.getElementById("name") as HTMLInputElement).value,
-        email: (document.getElementById("email") as HTMLInputElement).value,
+        email: (document.getElementById("telegram") as HTMLInputElement).value,
         message: (document.getElementById("message") as HTMLTextAreaElement).value,
       })
 
       setIsSubmitted(true)
       ;(document.getElementById("name") as HTMLInputElement).value = ""
-      ;(document.getElementById("email") as HTMLInputElement).value = ""
+      ;(document.getElementById("telegram") as HTMLInputElement).value = ""
       ;(document.getElementById("message") as HTMLTextAreaElement).value = ""
     } catch (err) {
       setError("Failed to send message. Please try again later.")
@@ -231,8 +236,19 @@ export default function Contact() {
                     </motion.div>
 
                     <motion.div variants={item}>
-                      <Label htmlFor="email">{translations.email[language]}</Label>
-                      <Input id="email" type="email" required className="mt-1" />
+                      <Label htmlFor="telegram">{translations.telegram[language]}</Label>
+                      <Input
+                        id="telegram"
+                        required
+                        className="mt-1"
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          // Agar @ belgisi yo'q bo'lsa, avtomatik qo'shish
+                          if (!value.startsWith("@")) {
+                            e.target.value = "@" + value.replace("@", "");
+                          }
+                        }}
+                      />
                     </motion.div>
 
                     <motion.div variants={item}>
